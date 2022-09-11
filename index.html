@@ -41,22 +41,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script >
-    const { ipcRenderer } = require('electron');
     document.querySelector('#submit').addEventListener('click', function() {
 
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
     console.log(username+":"+password)
-    alert(username)
-   // alert(password)
-
-    // send username to main.js 
-    ipcRenderer.send('asynchronous-message', username )
-    // receive message from main.js
-    ipcRenderer.on('asynchronous-reply', (event, arg) => {
-      console.log(arg)         
-    })     
-});
+    window.api.send("toMain", {"username":username,"password":password});
+    window.api.receive("fromMain", (data) => {
+            alert(`Received ${data} from main process`);
+        });    
+  });
 
     </script>
   </body>
