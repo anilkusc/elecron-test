@@ -20,7 +20,7 @@
 
         <a class="navbar-brand" href="home.html">New</a>
 
-        <a href="index.html"><button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button></a>
+        <a href="index.html"><button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logout-button">Logout</button></a>
 
       </nav>
 
@@ -144,8 +144,8 @@
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
-></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
+    <script>document.getElementById('logout-button').addEventListener('click', () => {window.electron.logout();});</script>
 </body>
 
 </html>

@@ -55,3 +55,14 @@ ipcMain.on("user:login", (event, data) => {
     event.reply("login-failed", "invalid credentials");
   });
 });
+
+ipcMain.on("user:logout", (event) => {
+  axios({method: "GET",url: '/user/logout',withCredentials: true}).then(response =>{
+    console.log(response)  
+    win.loadFile(path.join(__dirname, "index.html"));
+
+  }).catch(error => {
+    console.log(error.message)
+    win.loadFile(path.join(__dirname, "index.html"));
+  });
+});
