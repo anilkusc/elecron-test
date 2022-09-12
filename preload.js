@@ -1,25 +1,9 @@
-const {
-  contextBridge,
-  ipcRenderer
-} = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
-// Expose protected methods that allow the renderer process to use
-// the ipcRenderer without exposing the entire object
-contextBridge.exposeInMainWorld(
-  "api", {
-      send: (channel, data) => {
-          // whitelist channels
-          let validChannels = ["toMain"];
-          if (validChannels.includes(channel)) {
-              ipcRenderer.send(channel, data);
-          }
-      },
-      receive: (channel, func) => {
-          let validChannels = ["fromMain"];
-          if (validChannels.includes(channel)) {
-              // Deliberately strip event as it includes `sender` 
-              ipcRenderer.on(channel, (event, ...args) => func(...args));
-          }
-      }
-  }
-);
+contextBridge.exposeInMainWorld("electron", {
+  login: (data) => ipcRenderer.send("user:login", data),
+});
+
+ipcRenderer.on("login-failed", (event, message) => {
+    document.getElementById("error-message").innerHTML = message;
+  });
