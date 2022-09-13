@@ -53,6 +53,8 @@ ipcMain.on("user:login", (event, data) => {
   axios({method: "POST", data: data , url: '/user/login' }).then(response =>{
     if (response.status === 200){
       fs.writeFileSync('cookies.txt', response.headers["set-cookie"].toString());
+      const data = fs.readFileSync('cookies.txt', 'utf8');
+      axios.defaults.headers.common['Cookie'] = data;
       win.loadFile(path.join(__dirname, "home.html"));
     }else{
       event.reply("login-failed", "invalid-credentials");
