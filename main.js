@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain,session } = require("electron");
+const { app, BrowserWindow, ipcMain,ipcRenderer } = require("electron");
 const path = require("path");
 const axios = require("axios")
 const fs = require('fs');
@@ -43,7 +43,7 @@ async function createWindow() {
     win.loadFile(path.join(__dirname, "index.html"));
   });
 
-  win.openDevTools()
+  //win.openDevTools()
 }
 
 app.on("ready", createWindow);
@@ -76,10 +76,9 @@ ipcMain.on("user:logout", (event) => {
   });
 });
 
-ipcMain.handle("problem_template:list", (event) => {
+ipcMain.on("problem_template:list", (event) => {
   axios({method: "GET" , url: 'problem_templates/pbx/list' , withCredentials: true}).then(response =>{
-    console.log(response.data)
-    return response
+    event.reply("template-list", response.data);
   }).catch(error => {
     console.log(error.message)
   });
