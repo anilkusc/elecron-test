@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+        <a class="navbar-brand" href="home.html">Home</a>
+        <a class="navbar-brand" href="home.html">Applied</a>
+        <a class="navbar-brand" href="personal.html">Personal</a>
+        <a class="navbar-brand" href="home.html">New</a>
+        <a href="index.html"><button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logout-button">Logout</button></a>
+
+      </nav>
+
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-9 col-xl-7">
+                    <div class="card rounded-3">
+                        <div class="card-body p-4">
+                            <h4 class="text-center my-3 pb-3">Personal Information</h4>
+                            <form id="list-personal-data">
+                                <div class="form-group">
+                                  <label>Address:</label>
+                                  <input type="text" class="form-control" id="pbxAddress" placeholder="https://192.168.1.100:8089">
+                                </input>
+                                </div>
+                                <div class="form-group">
+                                  <label>Username:</label>
+                                  <input type="text" class="form-control" id="pbxUser" placeholder="admin">
+                                </input>
+                                </div>
+                                <div class="form-group">
+                                  <label>Password: </label>
+                                  <input type="password" class="form-control" id="pbxPass" placeholder="Password">
+                                </input>
+                                </div>
+                                <br></br>
+                                <button type="submit" class="btn btn-primary" id="saveCreds">Save</button>
+                              </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
+    <script>document.getElementById('saveCreds').addEventListener('click', () => {
+        let pbxAddress = document.getElementById("pbxAddress").value;
+        let pbxUser = document.getElementById("pbxUser").value;
+        let pbxPass = document.getElementById("pbxPass").value;
+        window.electron.personalSet({"pbxAddress":pbxAddress,"pbxUser":pbxUser,"pbxPass":pbxPass})
+        });</script>
+    <script>window.addEventListener('DOMContentLoaded', () => {window.electron.personal();});</script>
+</body>
+
+</html>

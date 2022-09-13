@@ -43,7 +43,7 @@ async function createWindow() {
     win.loadFile(path.join(__dirname, "index.html"));
   });
 
-  //win.openDevTools()
+  win.openDevTools()
 }
 
 app.on("ready", createWindow);
@@ -82,4 +82,19 @@ ipcMain.on("problem_template:list", (event) => {
   }).catch(error => {
     console.log(error.message)
   });
+});
+
+ipcMain.on("personal:info", (event) => {
+
+  var data = fs.readFileSync('creds.txt', 'utf8');
+  if (data == null){
+    data = '{"pbxAddress":"","pbxUser":"","pbxPass":""}'
+  }
+    event.reply("personal-info", JSON.parse(data));
+
+});
+
+ipcMain.on("personal:set", (event,data) => {
+  fs.writeFileSync('creds.txt', JSON.stringify(data));
+  event.reply("personal-info", data);
 });

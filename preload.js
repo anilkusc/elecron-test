@@ -8,10 +8,19 @@ contextBridge.exposeInMainWorld("electron", {
     return problem_templates;
   },
   logout: () => ipcRenderer.send("user:logout"),
+  personal: () => ipcRenderer.send("personal:info"),
+  personalSet: (data) => ipcRenderer.send("personal:set",data),
 });
 
 ipcRenderer.on("login-failed", (event, message) => {
     document.getElementById("error-message").innerHTML = message;
+});
+
+ipcRenderer.on("personal-info", (event, data) => {
+  console.log(data)
+    document.getElementById("pbxAddress").value = data.pbxAddress;
+    document.getElementById("pbxUser").value = data.pbxUser;
+    document.getElementById("pbxPass").value = data.pbxPass;
 });
 
 ipcRenderer.on('template-list', function (event,data) {

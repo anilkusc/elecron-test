@@ -10,7 +10,7 @@
     <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="home.html">Home</a>
         <a class="navbar-brand" href="home.html">Applied</a>
-        <a class="navbar-brand" href="home.html">Personal</a>
+        <a class="navbar-brand" href="personal.html">Personal</a>
         <a class="navbar-brand" href="home.html">New</a>
         <a href="index.html"><button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logout-button">Logout</button></a>
 
@@ -35,11 +35,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"></script>
     <script>document.getElementById('logout-button').addEventListener('click', () => {window.electron.logout();});</script>
-    <script>
-       window.addEventListener('DOMContentLoaded', () => {
-        window.electron.listProblemTemplates()
-      });
-    </script>
+    <script>window.addEventListener('DOMContentLoaded', () => {window.electron.listProblemTemplates()});</script>
 </body>
 
 </html>
