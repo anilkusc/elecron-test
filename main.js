@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain,session } = require("electron");
 const path = require("path");
 const axios = require("axios")
+const fs = require('fs');
 
 if (process.env.BASE_URL == null){
   axios.defaults.baseURL = "http://localhost:8080"
@@ -8,8 +9,12 @@ if (process.env.BASE_URL == null){
   axios.defaults.baseURL = process.env.BASE_URL
 }
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+try {
+  const data = fs.readFileSync('cookies.txt', 'utf8');
+  axios.defaults.headers.common['Cookie'] = data;
+} catch (err) {
+  console.error(err);
+}
 let win;
 
 async function createWindow() {
@@ -44,8 +49,10 @@ async function createWindow() {
 app.on("ready", createWindow);
 
 ipcMain.on("user:login", (event, data) => {
-  axios({method: "POST",data: data,url: '/user/login'}).then(response =>{
+  
+  axios({method: "POST", data: data , url: '/user/login' }).then(response =>{
     if (response.status === 200){
+      fs.writeFileSync('cookies.txt', response.headers["set-cookie"].toString());
       win.loadFile(path.join(__dirname, "home.html"));
     }else{
       event.reply("login-failed", "invalid-credentials");
@@ -58,11 +65,20 @@ ipcMain.on("user:login", (event, data) => {
 
 ipcMain.on("user:logout", (event) => {
   axios({method: "GET",url: '/user/logout',withCredentials: true}).then(response =>{
-    console.log(response)  
+    fs.writeFileSync('cookies.txt', "");
     win.loadFile(path.join(__dirname, "index.html"));
 
   }).catch(error => {
     console.log(error.message)
     win.loadFile(path.join(__dirname, "index.html"));
+  });
+});
+
+ipcMain.handle("problem_template:list", (event) => {
+  axios({method: "GET" , url: 'problem_templates/pbx/list' , withCredentials: true}).then(response =>{
+    console.log(response.data)
+    return response
+  }).catch(error => {
+    console.log(error.message)
   });
 });
