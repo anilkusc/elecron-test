@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld("electron", {
   logout: () => ipcRenderer.send("user:logout"),
   personal: () => ipcRenderer.send("personal:info"),
   personalSet: (data) => ipcRenderer.send("personal:set",data),
+  addNewStep: () => ipcRenderer.send("new:step"),
 });
 
 ipcRenderer.on("login-failed", (event, message) => {
@@ -17,7 +18,6 @@ ipcRenderer.on("login-failed", (event, message) => {
 });
 
 ipcRenderer.on("personal-info", (event, data) => {
-  console.log(data)
     document.getElementById("pbxAddress").value = data.pbxAddress;
     document.getElementById("pbxUser").value = data.pbxUser;
     document.getElementById("pbxPass").value = data.pbxPass;
@@ -70,4 +70,54 @@ ipcRenderer.on('template-list', function (event,data) {
     </div>`
     accordion.appendChild(accordion_div)
   });
+});
+
+ipcRenderer.on('add-new-step', function (event) {
+  var list  = document.querySelectorAll("ul#ex1 li");
+  var ul = document.getElementById("ex1")
+  var li = document.createElement("li")
+  li.class = "nav-item"
+  li.setAttribute("role","presentation")
+  li.innerHTML = `<a  class="nav-link active"  id="ex1-tab-`+list.length+`"  data-mdb-toggle="tab"  href="#ex1-tabs-`+list.length+`"  role="tab"  aria-controls="ex1-tabs-`+list.length+`"  aria-selected="true">Step `+(list.length+1)+`</a>`
+  ul.appendChild(li)
+  var contents = document.getElementById("ex1-content")
+  var new_content = document.createElement("div")
+  new_content.class = "tab-pane fade"
+  new_content.id="ex1-tabs-"+list.length
+  new_content.setAttribute("role","tabpanel")
+  new_content.setAttribute("aria-labelledby","ex1-tab-"+list.length)
+  new_content.innerHTML=`<div class="form-group">
+  <label>Expected Response Status Codes:</label>
+  <input type="text" class="form-control" id="expected_response_status_codes-`+list.length+`" placeholder="200,300">
+</input>
+</div>
+<div class="form-group">
+  <label>Request Headers:</label>
+  <input type="text" class="form-control" id="request_headers-`+list.length+`" placeholder="{'content-type': 'application/json'}">
+</input>
+</div>
+<div class="form-group">
+  <label>Request Path:</label>
+  <input type="text" class="form-control" id="request_path-`+list.length+`" placeholder="/api">
+</input>
+</div>
+<div class="form-group">
+  <label>Request Body:</label>
+  <input type="text" class="form-control" id="request_body-`+list.length+`" placeholder="{'ip':'192.168.1.1'}">
+</input>
+</div>
+<label>Method:</label>
+<select class="form-select" aria-label="Default select example" id="method-`+list.length+`">
+  <option value="GET" selected>GET</option>
+  <option value="POST">POST</option>
+  <option value="PUT">PUT</option>
+  <option value="PATCH">PATCH</option>
+  <option value="DELETE">DELETE</option>
+</select>
+<div class="form-group">
+<label>Timeout:</label>
+<input type="text" class="form-control" id="timeout-`+list.length+`" placeholder="20">
+</input>
+</div>`
+  contents.appendChild(new_content)
 });

@@ -98,3 +98,7 @@ ipcMain.on("personal:set", (event,data) => {
   fs.writeFileSync('creds.txt', JSON.stringify(data));
   event.reply("personal-info", data);
 });
+
+ipcMain.on("new:step", (event) => {
+  event.reply("add-new-step");
+});
